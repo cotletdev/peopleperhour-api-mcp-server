@@ -1,6 +1,6 @@
 [project]
 name = "peopleperhour-api-mcp"
-version = "1.0.1"
+version = "1.0.2"
 description = "Self-hosted PeoplePerHour API and MCP server on your own Chrome session. Personal use only."
 readme = "README.md"
 license = { file = "LICENSE" }

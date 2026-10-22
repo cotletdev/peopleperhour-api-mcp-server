@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+import re
 from datetime import UTC, datetime
 from typing import Any
 from urllib.parse import quote
+
+from peopleperhour_api_mcp.core.errors import ErrorCode, ToolError
 
 # The 10 top categories of GET /v2/categories (22.10.2026): PeoplePerHour's slug (as in project URLs) -> cate_id.
 CATEGORIES = {
@@ -98,3 +101,12 @@ def attachments(attrs: dict[str, Any]) -> list[str]:
     raw = attrs.get("project_attachments") or {}
     paths = [raw[key] for key in sorted(raw) if isinstance(raw[key], str) and raw[key].strip()]
     return [UPLOADS + quote(path.strip(), safe="/") for path in paths]
+
+
+def project_id(value: Any) -> str:
+    """The number from an id or from a project URL (`.../website-design-4527860`)."""
+    text = str(value or "").strip().split("?")[0].split("#")[0].rstrip("/")
+    match = re.search(r"(\d+)$", text)
+    if not match:
+        raise ToolError("project_id must come from search_projects or be a project URL.", ErrorCode.INVALID_INPUT)
+    return match.group(1)

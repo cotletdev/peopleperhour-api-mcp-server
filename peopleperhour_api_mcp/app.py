@@ -33,5 +33,8 @@ RELOGIN_MARKERS: tuple[str, ...] = ()
 API_PREFIX = "/api/v1/peopleperhour"
 # Prepended to the MCP server's instructions: where an agent starts.
 AGENT_START = (
-    "Start with search_projects: its project_id values are what get_project takes. Both tools only read projects."
+    "Start with search_projects: its project_id values are what get_project and watch_project take. "
+    "search_freelancers and search_offers lead to get_freelancer and get_offer the same way. "
+    "Only watch_project, unwatch_project, save_search and delete_saved_search change anything: "
+    "the account's own watchlist and saved searches."
 )

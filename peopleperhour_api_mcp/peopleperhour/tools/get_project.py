@@ -2,13 +2,12 @@
 
 from __future__ import annotations
 
-import re
 from typing import TYPE_CHECKING, Any
 
 from peopleperhour_api_mcp.core.errors import ErrorCode, ToolError
 from peopleperhour_api_mcp.core.tools import tool
 from peopleperhour_api_mcp.peopleperhour.client import v2
-from peopleperhour_api_mcp.peopleperhour.tools._projects import attachments, project_row
+from peopleperhour_api_mcp.peopleperhour.tools._projects import attachments, project_id, project_row
 
 if TYPE_CHECKING:
     from peopleperhour_api_mcp.core.context import ToolContext
@@ -59,15 +58,6 @@ EXAMPLE_RESPONSE: dict[str, Any] = {
         "url": "https://www.peopleperhour.com/freelancer/social-media/josh-s-qazyxq",
     },
 }
-
-
-def _project_id(value: Any) -> str:
-    """The number from an id or from a project URL (`.../website-design-4527860`)."""
-    text = str(value or "").strip().split("?")[0].split("#")[0].rstrip("/")
-    match = re.search(r"(\d+)$", text)
-    if not match:
-        raise ToolError("project_id must come from search_projects or be a project URL.", ErrorCode.INVALID_INPUT)
-    return match.group(1)
 
 
 def _included(body: dict[str, Any], kind: str, item_id: Any = None) -> list[dict[str, Any]]:
@@ -121,7 +111,7 @@ def _client(raw: Any) -> dict[str, Any] | None:
     example_response=EXAMPLE_RESPONSE,
 )
 async def get_project(ctx: ToolContext, args: dict[str, Any]) -> Any:
-    pid = _project_id(args.get("project_id"))
+    pid = project_id(args.get("project_id"))
     try:
         body = await v2(ctx, "GET", f"/projects/{pid}", params={"include": INCLUDE}, not_found=NOT_FOUND)
     except ToolError as exc:

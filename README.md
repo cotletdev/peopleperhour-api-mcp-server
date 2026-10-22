@@ -1,18 +1,18 @@
 # PeoplePerHour API and MCP server, self-hosted
 
-A **PeoplePerHour API** and a **PeoplePerHour MCP server** you run on your own computer, in Python, on the session of your own Google Chrome. The same 2 PeoplePerHour tools we run in production at [Cotlet](https://cotlet.dev/integrations/peopleperhour-api-mcp-server): search open projects, and read one project's full brief with its attached files, the buyer's questions and the proposal count.
+A **PeoplePerHour API** and a **PeoplePerHour MCP server** you run on your own computer, in Python, on the session of your own Google Chrome. The same 17 PeoplePerHour tools we run in production at [Cotlet](https://cotlet.dev/integrations/peopleperhour-api-mcp-server): search open projects and read full briefs, search freelancers and Offers and read profiles with recent reviews, keep a project watchlist and saved searches with email alerts, see median budgets per category, and read your own posted projects, notifications and WorkStreams.
 
 PeoplePerHour has no public API and no official MCP server. This repo gives you both:
 
 - **MCP server** for Claude Code, Claude Desktop, Cursor, Codex and any MCP client, over stdio or HTTP. [Setup](#mcp-server)
 - **REST API** on `http://127.0.0.1:8787/api/v1/peopleperhour`, with OpenAPI docs at `/docs`. [Setup](#rest-api)
-- **Python**: `call("search_projects", query="web design")`, plus 4 ready scripts in [`examples/`](examples/).
+- **Python**: `call("search_projects", query="web design")`, plus 9 ready scripts in [`examples/`](examples/).
 
-Both tools only read. Nothing here sends a proposal, a message or an Offer, and no Proposal credit is spent.
+13 tools read. The other 4 change only your own watchlist and saved searches. Nothing here sends a proposal or a message, posts a project, buys an Offer or pays, and no Proposal credit is spent.
 
 It is for technical people who want to run it themselves, **for personal use only** ([license](#license)). If you want it running 24/7 on a server, kept working when PeoplePerHour changes its site, for a team or a business, use the [hosted version at cotlet.dev](https://cotlet.dev/integrations/peopleperhour-api-mcp-server).
 
-[![PeoplePerHour MCP server](https://img.shields.io/badge/PeoplePerHour%20MCP-2%20tools-6d4aef)](#both-tools)
+[![PeoplePerHour MCP server](https://img.shields.io/badge/PeoplePerHour%20MCP-17%20tools-6d4aef)](#all-17-tools)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-141318)](#requirements)
 [![License: personal use](https://img.shields.io/badge/license-personal%20use-141318)](LICENSE)
 
@@ -33,7 +33,7 @@ claude mcp add peopleperhour -- "$PWD/.venv/bin/peopleperhour-mcp" mcp
 - [MCP server](#mcp-server)
 - [REST API](#rest-api)
 - [Python and the example scripts](#python-and-the-example-scripts)
-- [Both tools](#both-tools)
+- [All 17 tools](#all-17-tools)
 - [Configuration](#configuration)
 - [Security and your PeoplePerHour account](#security-and-your-peopleperhour-account)
 - [Errors](#errors)
@@ -51,7 +51,7 @@ AI agent (MCP) / script (REST, Python) ──▶ peopleperhour-mcp on your compu
 
 1. You sign in to PeoplePerHour in your own Chrome, the way you always do. Tick **Remember me**.
 2. `peopleperhour-mcp connect` attaches to that Chrome through the Chrome DevTools Protocol, reads the peopleperhour.com cookies and saves them to `~/.config/peopleperhour-api-mcp/session.json`, readable by your user only. It never sees or stores your password.
-3. Every tool call is a request to the JSON API the PeoplePerHour site itself calls (`www.peopleperhour.com/v2/projects`) with those cookies, sent with [curl_cffi](https://github.com/lexiforest/curl_cffi), which copies Chrome's TLS fingerprint. No headless browser runs.
+3. Every tool call is a request to the JSON API the PeoplePerHour site itself calls (`www.peopleperhour.com/v2/...`) with those cookies, sent with [curl_cffi](https://github.com/lexiforest/curl_cffi), which copies Chrome's TLS fingerprint. No headless browser runs.
 
 The session lives in the `api` cookie, about 100 days after a sign-in with Remember me. When PeoplePerHour signs you out, the server reads the cookies from Chrome again, if Chrome is open with remote debugging on.
 
@@ -60,7 +60,7 @@ The session lives in the `api` cookie, about 100 days after a sign-in with Remem
 - Python 3.11 or newer.
 - Google Chrome 144 or newer, signed in to PeoplePerHour. Any Chrome or Chromium works with a [debugging port](#option-b-a-chrome-with-a-debugging-port).
 - macOS, Linux or Windows.
-- Any PeoplePerHour account. A free buyer account is enough: the tools read the same project search and project pages every member sees.
+- Any PeoplePerHour account. A free buyer account is enough for all 17 tools.
 
 ## Install
 
@@ -139,7 +139,7 @@ peopleperhour-mcp status
 
 ## MCP server
 
-The MCP server lists both tools with their input schemas and a description written for agents. Both are marked read-only.
+The MCP server lists all 17 tools with their input schemas and a description written for agents. The 13 read tools are marked read-only; `--read-only` hides the 4 that change your watchlist and saved searches.
 
 ### Claude Code
 
@@ -192,6 +192,10 @@ Then ask your agent things like:
 > *Read the brief of project 4527712, open the files the buyer attached, list what I must deliver and the questions I have to answer, and draft a proposal I can paste.*
 >
 > *Is project 4527712 still open, and how many proposals does it have now?*
+>
+> *Find logo designers rated 80% or more at £10 to £30 an hour, read the profiles and recent reviews of the top five, and tell me which three to contact.*
+>
+> *Save a search for urgent fixed-price design projects called "Urgent design" with a daily email.*
 
 ## REST API
 
@@ -204,6 +208,8 @@ Each tool has its own route under `/api/v1/peopleperhour`, the same paths as the
 ```bash
 curl 'http://127.0.0.1:8787/api/v1/peopleperhour/projects/search?query=web%20design&since=2026-10-21T07:00:00Z&limit=20'
 curl 'http://127.0.0.1:8787/api/v1/peopleperhour/projects/4527712'
+curl 'http://127.0.0.1:8787/api/v1/peopleperhour/freelancers/search?query=logo%20design&min_rating=80'
+curl -X PUT 'http://127.0.0.1:8787/api/v1/peopleperhour/projects/4527712/watch'
 ```
 
 Any tool by name, body as its arguments:
@@ -212,9 +218,9 @@ Any tool by name, body as its arguments:
 curl -X POST http://127.0.0.1:8787/api/v1/peopleperhour/tools/search_projects -d '{"category": "design", "limit": 10}'
 ```
 
-- `GET /api/v1/peopleperhour/tools`: both tools with their route, input schema and an example answer.
+- `GET /api/v1/peopleperhour/tools`: every tool with its route, input schema and an example answer.
 - `GET /docs`: interactive OpenAPI docs, `GET /openapi.json` the schema, for n8n, Postman or a generated client.
-- Answers are JSON. `search_projects` returns `next_cursor`; pass it back as `cursor` for the next page.
+- Answers are JSON. List tools return `next_cursor`; pass it back as `cursor` for the next page.
 
 The server listens on `127.0.0.1` only. To reach it from another device of yours, set a token, and every request then needs `Authorization: Bearer <token>`:
 
@@ -237,7 +243,7 @@ brief = call("get_project", project_id=new[0]["project_id"])["brief"]
 
 Or one tool from the shell: `peopleperhour-mcp call get_project project_id=4527712`, or with a JSON object.
 
-Ready scripts in [`examples/`](examples/), one per job on the [integration page](https://cotlet.dev/integrations/peopleperhour-api-mcp-server). With two read tools there are four jobs worth a script, not more. Each takes `--help`, and the list scripts take `--out file.csv` or `--out file.json`:
+Ready scripts in [`examples/`](examples/), one per job on the [integration page](https://cotlet.dev/integrations/peopleperhour-api-mcp-server). Each takes `--help`, and the list scripts take `--out file.csv` or `--out file.json`:
 
 | Script | What it does |
 |---|---|
@@ -245,17 +251,24 @@ Ready scripts in [`examples/`](examples/), one per job on the [integration page]
 | [`read_project_brief.py`](examples/read_project_brief.py) | One project before you write a proposal: brief, attached files, the buyer's questions, proposals, expiry and the 80% price floor. |
 | [`watch_urgent_projects.py`](examples/watch_urgent_projects.py) | Urgent projects in a category with fewer than N proposals. `--state` remembers the last run, for an hourly cron job. |
 | [`check_project_open.py`](examples/check_project_open.py) | Whether projects are still open and how many proposals each has now. |
+| [`shortlist_freelancers.py`](examples/shortlist_freelancers.py) | Freelancers for a skill, cut on rate band and rating, with each profile's stats and the average of its latest reviews. |
+| [`compare_offers.py`](examples/compare_offers.py) | The top Offers for a job side by side: price, delivery days, sales, add-ons and what the seller needs from you. |
+| [`save_project_alert.py`](examples/save_project_alert.py) | Save a project search with filters and a daily or instant email alert, then list your saved searches. |
+| [`buyer_daily_digest.py`](examples/buyer_daily_digest.py) | For a buyer: your open projects with proposal counts, unread notifications and WorkStreams with unread messages. |
+| [`median_budgets.py`](examples/median_budgets.py) | Median fixed and hourly budgets per freelancer level for the categories you name, in GBP, USD or EUR. |
 
 ```bash
 python examples/find_new_projects.py --query "web design" --query webflow --hours 24 --min-budget 200 --max-proposals 15
 python examples/read_project_brief.py 4527712
+python examples/shortlist_freelancers.py "logo design" --hourly-rate 10-30 --min-rating 80
+python examples/median_budgets.py translation --currency USD
 ```
 
 On a schedule, cron on your own computer works while it is on: `0 * * * * cd ~/peopleperhour-api-mcp-server && .venv/bin/python examples/watch_urgent_projects.py --category design --state urgent.json`.
 
 Budgets are compared as PeoplePerHour gives them, in the buyer's currency (GBP, EUR or USD), so a floor of 200 means 200 of whatever the buyer picked.
 
-## Both tools
+## All 17 tools
 
 `peopleperhour-mcp tools` prints this list, `peopleperhour-mcp tools --json` adds the input schemas. Times are UTC.
 
@@ -263,10 +276,59 @@ Budgets are compared as PeoplePerHour gives them, in the buyer's currency (GBP, 
 
 | Tool | Access | REST route | What it does |
 |---|---|---|---|
-| `search_projects` | read | `GET /projects/search` | Open projects buyers posted, newest first, with budget, category, proposals and the brief's start. Filters: `query`, `category` (one of the 10 top categories), `since`. |
-| `get_project` | read | `GET /projects/{project_id}` | One project's full brief with budget, attachments, interview questions, buyer and proposal count. Takes a `project_id` or the project's URL. |
+| `search_projects` | read | `GET /projects/search` | Open projects buyers posted, newest first, with budget, category, proposals and the brief's start. |
+| `get_project` | read | `GET /projects/{project_id}` | One project's full brief with budget, attachments, interview questions, buyer and proposal count. |
+| `list_my_projects` | read | `GET /projects/mine` | Projects this account posted as a buyer, with status, budget and proposal count. |
+
+### Watchlist
+
+| Tool | Access | REST route | What it does |
+|---|---|---|---|
+| `watch_project` | write | `PUT /projects/{project_id}/watch` | Add a project to this account's watchlist (Favourite Jobs) to come back to it later. |
+| `unwatch_project` | write | `DELETE /projects/{project_id}/watch` | Take a project off this account's watchlist. |
+| `list_watchlist` | read | `GET /projects/watched` | Open projects on this account's watchlist (Favourite Jobs), with budget and proposal count. |
+
+### Saved searches
+
+| Tool | Access | REST route | What it does |
+|---|---|---|---|
+| `list_saved_searches` | read | `GET /saved-searches` | This account's saved project searches with their filters and email alert setting. |
+| `save_search` | write | `POST /saved-searches` | Save a project search with an email alert, or rename one or change how often it emails. |
+| `delete_saved_search` | write | `DELETE /saved-searches/{saved_search_id}` | Delete one of this account's saved project searches and its email alert. |
+
+### Freelancers
+
+| Tool | Access | REST route | What it does |
+|---|---|---|---|
+| `search_freelancers` | read | `GET /freelancers/search` | Freelancers by skill or keyword, with rate, rating, reviews, completed projects and skills. |
+| `get_freelancer` | read | `GET /freelancers/{freelancer_id}` | A freelancer's public profile: rate, stats, skills, portfolio and the latest reviews on the page. |
+
+### Offers
+
+| Tool | Access | REST route | What it does |
+|---|---|---|---|
+| `search_offers` | read | `GET /offers/search` | Fixed-price Offers freelancers sell, by keyword or price, with sales, rating and seller. |
+| `get_offer` | read | `GET /offers/{offer_id}` | One Offer with its full description, what the seller needs from you, prices, add-ons and images. |
+
+### Account, notifications and WorkStreams
+
+| Tool | Access | REST route | What it does |
+|---|---|---|---|
+| `get_account` | read | `GET /account` | The signed-in PeoplePerHour account: name, type, buyer stats, unread messages and favourite counts. |
+| `list_notifications` | read | `GET /notifications` | The latest notifications of this account (proposals, messages, project updates) and unread counts. |
+| `list_workstreams` | read | `GET /workstreams` | This account's WorkStreams (conversations with hired freelancers) with the last message. |
+
+### Categories
+
+| Tool | Access | REST route | What it does |
+|---|---|---|---|
+| `list_categories` | read | `GET /categories` | The 10 project categories with their subcategories and typical budgets per freelancer level. |
 
 `since` makes polling cheap: an agent passes the time of its last check and reads only what arrived after it. One call with `since` scans at most the 200 newest projects, so a page can hold fewer than `limit` and still have a `next_cursor`.
+
+Budgets, rates and prices come as PeoplePerHour gives them: a project in the buyer's currency, freelancer rates, Offers and median budgets in your account currency or the one you pick.
+
+Not in this version: the freelancer side (proposals, your seller profile, your own Offers), posting or editing projects, sending messages in WorkStreams, accepting proposals, and payments, invoices and Proposal credits.
 
 Never built, on purpose: your PeoplePerHour sign-in, email, password and settings, and anything that moves money (Proposal credits, subscriptions, payments). Every request passes a guard that refuses any change to those PeoplePerHour paths.
 
@@ -277,7 +339,7 @@ Never built, on purpose: your PeoplePerHour sign-in, email, password and setting
 | `PEOPLEPERHOUR_MCP_HOME` | `~/.config/peopleperhour-api-mcp` | Folder of `session.json`. |
 | `PEOPLEPERHOUR_AUTH_TOKEN` | | PeoplePerHour `api` cookie, instead of `peopleperhour-mcp connect`. |
 | `PEOPLEPERHOUR_PROXY` | | Proxy for every request to PeoplePerHour, e.g. `http://user:pass@host:port`. |
-| `PEOPLEPERHOUR_MCP_READ_ONLY` | | `1` hides and refuses every tool that changes PeoplePerHour (same as `--read-only`). Both tools today only read. |
+| `PEOPLEPERHOUR_MCP_READ_ONLY` | | `1` hides and refuses the 4 tools that change PeoplePerHour: watchlist and saved searches (same as `--read-only`). |
 | `PEOPLEPERHOUR_MCP_TOKEN` | | Bearer token required by `serve`; needed to listen beyond `127.0.0.1`. |
 | `PEOPLEPERHOUR_MCP_HOST`, `PEOPLEPERHOUR_MCP_PORT` | `127.0.0.1`, `8787` | Address of `serve`. |
 
@@ -287,7 +349,7 @@ Never built, on purpose: your PeoplePerHour sign-in, email, password and setting
 - **The session file is yours.** `session.json` is created with mode 0600. Anyone who has it can act as you on PeoplePerHour, so keep it out of git and shared folders.
 - **Local by default.** `serve` binds to `127.0.0.1` and refuses another address without `PEOPLEPERHOUR_MCP_TOKEN`.
 - **peopleperhour.com only.** Requests and redirects outside peopleperhour.com are refused. Attachment links point to PeoplePerHour's file host; the server returns them and does not download them.
-- **Read only.** Both tools read projects. Nobody sees a call: no proposal, message or view goes to the buyer.
+- **Your own lists only.** 13 tools read. The 4 writes change your watchlist and saved searches and nothing else: no proposal, message or Offer purchase goes to anyone. A watched project lists you among its watchers, so unwatch what you no longer follow.
 - **Keep the pace human.** A cron job every hour is fine. Hundreds of calls a minute is not how a person browses, and you are responsible for what runs in your account.
 
 ## Errors
@@ -301,13 +363,13 @@ The REST API answers `{"error": "<code>", "message": "..."}`. The MCP server ret
 | 409 | `captcha_required` | PeoplePerHour asks for a CAPTCHA. Solve it in Chrome. |
 | 422 | `invalid_input` | An argument is missing or wrong; the message names it. |
 | 429 | `rate_limited` | PeoplePerHour is limiting the account. Wait a few minutes. |
-| 502 | `target_error` | No such project, a private or removed one, or PeoplePerHour answered with an error or changed its site. `git pull` for the latest tools, or [open an issue](https://github.com/cotletdev/peopleperhour-api-mcp-server/issues). |
+| 502 | `target_error` | No such project, freelancer, Offer or saved search, a private or removed one, a filter PeoplePerHour refused (the message gives its reason), or PeoplePerHour answered with an error or changed its site. `git pull` for the latest tools, or [open an issue](https://github.com/cotletdev/peopleperhour-api-mcp-server/issues). |
 
 ## Self-hosted or hosted
 
 | | This repo | [Cotlet, hosted](https://cotlet.dev/integrations/peopleperhour-api-mcp-server) |
 |---|---|---|
-| Tools | the same 2 | the same 2 |
+| Tools | the same 17 | the same 17 |
 | Runs | on your computer, while it is on | in the cloud, 24/7 |
 | PeoplePerHour session | your Chrome, cookies in a local file | your own Cloud Browser in the EU, profile encrypted with AES-256-GCM |
 | When PeoplePerHour changes its site | `git pull` once we have fixed it | fixed for you, every tool tested daily |
@@ -320,22 +382,25 @@ On the hosted version a successful call uses 20 to 30 credits (25 for most tools
 ## FAQ
 
 **Does PeoplePerHour have an official API?**
-No. PeoplePerHour has no public API, no developer docs and no webhooks (checked 12 Oct 2026). The one built-in alert is Saved Searches: up to 10 searches on the Jobs page, each emailing new results instantly or once a day. Nothing in it can be called from code. Details: [cotlet.dev/integrations/peopleperhour-api-mcp-server](https://cotlet.dev/integrations/peopleperhour-api-mcp-server).
+No. PeoplePerHour has no public API, no developer docs and no webhooks (checked 12 Oct 2026). The one built-in alert is Saved Searches: up to 10 searches on the Jobs page, each emailing new results instantly or once a day. PeoplePerHour gives you nothing to call them from code; here `save_search` and `list_saved_searches` manage them. Details: [cotlet.dev/integrations/peopleperhour-api-mcp-server](https://cotlet.dev/integrations/peopleperhour-api-mcp-server).
 
 **Is there a PeoplePerHour MCP server for Claude, ChatGPT or Cursor?**
 Yes, this one runs on your machine: `peopleperhour-mcp mcp` for Claude Code, Claude Desktop, Cursor and Codex. ChatGPT and Claude.ai connectors need a public HTTPS URL, which the [hosted PeoplePerHour MCP server](https://cotlet.dev/integrations/peopleperhour-api-mcp-server) gives you.
 
 **Is this a PeoplePerHour scraper?**
-It returns what people want a job scraper for (new projects with budget, proposals and brief, as JSON or CSV) but parses no HTML and runs no headless browser. It calls the same JSON endpoints the PeoplePerHour site calls, in your own account.
+It returns what people want a job scraper for (new projects with budget, proposals and brief, freelancers and Offers, as JSON or CSV) but runs no headless browser. It calls the same JSON endpoints the PeoplePerHour site calls, in your own account. The one HTML page it reads is a freelancer's profile, for the latest reviews.
 
 **Can I get new PeoplePerHour projects as they are posted?**
 Yes. Call `search_projects` with `since` set to your last check, from cron or an agent. [`watch_urgent_projects.py`](examples/watch_urgent_projects.py) keeps that time in a state file for you.
 
 **Can it send proposals or answer buyers?**
-No. Both tools read. Proposals, WorkStream messages, Offers, invoices, your Proposal credits and saved searches are not in this version, and it spends no credits. You write and send proposals on PeoplePerHour yourself.
+No. Proposals, WorkStream messages, buying Offers, invoices and your Proposal credits are not in this version, and it spends no credits. It can read your WorkStreams and notifications. You write and send proposals and messages on PeoplePerHour yourself.
+
+**Can I hire on PeoplePerHour with it?**
+It helps you choose: `search_freelancers` and `get_freelancer` for profiles and recent reviews, `search_offers` and `get_offer` for fixed-price Offers, `list_categories` for what buyers usually pay. Posting the project, contacting a freelancer and paying stay on PeoplePerHour.
 
 **Do I need a paid PeoplePerHour plan or a freelancer account?**
-No. A free buyer account is enough to search projects and read briefs.
+No. A free buyer account is enough for all 17 tools.
 
 **Does get_project return the project's skills?**
 No, because PeoplePerHour's project data has no list of skills. The skills are in the brief text, which an agent reads.
@@ -350,7 +415,7 @@ Calls fail with `auth_expired`. With Chrome remote debugging on, the server read
 Technically yes, with `PEOPLEPERHOUR_AUTH_TOKEN`. PeoplePerHour then sees your session from a datacenter IP, which looks less like you, and the license allows it only on a server you alone use. For an always-on setup the hosted version keeps your session in your own Cloud Browser on a fixed IP.
 
 **Will my PeoplePerHour account get banned?**
-Requests carry Chrome's fingerprint and go out one at a time, and both tools only read pages you could open yourself. Nobody can promise a platform never acts. Keep the polling to what a person would do.
+Requests carry Chrome's fingerprint and go out one at a time, and the tools read only what you could open yourself. Nobody can promise a platform never acts. Keep the polling to what a person would do.
 
 **Can I use it at work or for my clients?**
 No, the license is for personal use by one person. For a team, a company or client work, use [Cotlet](https://cotlet.dev) or write to [contact@cotlet.dev](mailto:contact@cotlet.dev).
