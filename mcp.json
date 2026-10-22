@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "peopleperhour": {
+      "command": "/path/to/peopleperhour-api-mcp-server/.venv/bin/peopleperhour-mcp",
+      "args": ["mcp"]
+    }
+  }
+}
