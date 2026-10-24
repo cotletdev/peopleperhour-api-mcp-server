@@ -1,5 +1,7 @@
 # PeoplePerHour API and MCP server, self-hosted
 
+<!-- mcp-name: dev.cotlet/peopleperhour -->
+
 A **PeoplePerHour API** and a **PeoplePerHour MCP server** you run on your own computer, in Python, on the session of your own Google Chrome. The same 17 PeoplePerHour tools we run in production at [Cotlet](https://cotlet.dev/integrations/peopleperhour-api-mcp-server): search open projects and read full briefs, search freelancers and Offers and read profiles with recent reviews, keep a project watchlist and saved searches with email alerts, see median budgets per category, and read your own posted projects, notifications and WorkStreams.
 
 PeoplePerHour has no public API and no official MCP server. This repo gives you both:
