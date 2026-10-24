@@ -8,7 +8,7 @@ PeoplePerHour has no public API and no official MCP server. This repo gives you 
 
 - **MCP server** for Claude Code, Claude Desktop, Cursor, Codex and any MCP client, over stdio or HTTP. [Setup](#mcp-server)
 - **REST API** on `http://127.0.0.1:8787/api/v1/peopleperhour`, with OpenAPI docs at `/docs`. [Setup](#rest-api)
-- **Python**: `call("search_projects", query="web design")`, plus 9 ready scripts in [`examples/`](examples/).
+- **Python**: `call("search_projects", query="web design")`, plus 9 ready scripts in [`examples/`](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/examples/).
 
 13 tools read. The other 4 change only your own watchlist and saved searches. Nothing here sends a proposal or a message, posts a project, buys an Offer or pays, and no Proposal credit is spent.
 
@@ -16,7 +16,7 @@ It is for technical people who want to run it themselves, **for noncommercial us
 
 [![PeoplePerHour MCP server](https://img.shields.io/badge/PeoplePerHour%20MCP-17%20tools-6d4aef)](#all-17-tools)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-141318)](#requirements)
-[![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/license-PolyForm%20Noncommercial-141318)](LICENSE)
+[![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/license-PolyForm%20Noncommercial-141318)](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/LICENSE)
 [![MCP Badge](https://lobehub.com/badge/mcp/cotletdev-peopleperhour-api-mcp-server)](https://lobehub.com/mcp/cotletdev-peopleperhour-api-mcp-server)
 
 ```bash
@@ -78,7 +78,7 @@ peopleperhour-mcp --version
 
 With [uv](https://docs.astral.sh/uv/): `uv venv && uv pip install -e .`, then `uv run peopleperhour-mcp ...`.
 
-Setting it up with an AI agent (Claude Code, Codex, Cursor)? Open it in this folder and ask it to set up the repo: [`AGENTS.md`](AGENTS.md) tells it every step, and it asks you only for the steps in Chrome.
+Setting it up with an AI agent (Claude Code, Codex, Cursor)? Open it in this folder and ask it to set up the repo: [`AGENTS.md`](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/AGENTS.md) tells it every step, and it asks you only for the steps in Chrome.
 
 To update: `git pull && pip install -e .`. We copy every change of the hosted PeoplePerHour tools into this repo.
 
@@ -167,7 +167,7 @@ claude mcp add peopleperhour -- /path/to/peopleperhour-api-mcp-server/.venv/bin/
 
 ### Cursor
 
-`~/.cursor/mcp.json`, the same block as Claude Desktop. A ready copy is in [`mcp.json`](mcp.json).
+`~/.cursor/mcp.json`, the same block as Claude Desktop. A ready copy is in [`mcp.json`](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/mcp.json).
 
 ### Codex
 
@@ -246,19 +246,19 @@ brief = call("get_project", project_id=new[0]["project_id"])["brief"]
 
 Or one tool from the shell: `peopleperhour-mcp call get_project project_id=4527712`, or with a JSON object.
 
-Ready scripts in [`examples/`](examples/), one per job on the [integration page](https://cotlet.dev/integrations/peopleperhour-api-mcp-server). Each takes `--help`, and the list scripts take `--out file.csv` or `--out file.json`:
+Ready scripts in [`examples/`](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/examples/), one per job on the [integration page](https://cotlet.dev/integrations/peopleperhour-api-mcp-server). Each takes `--help`, and the list scripts take `--out file.csv` or `--out file.json`:
 
 | Script | What it does |
 |---|---|
-| [`find_new_projects.py`](examples/find_new_projects.py) | New projects for one or more keywords in the last N hours, merged, cut on `--min-budget` (or `--hourly-rate`) and `--max-proposals`, then the full brief, questions and files of each one left. |
-| [`read_project_brief.py`](examples/read_project_brief.py) | One project before you write a proposal: brief, attached files, the buyer's questions, proposals, expiry and the 80% price floor. |
-| [`watch_urgent_projects.py`](examples/watch_urgent_projects.py) | Urgent projects in a category with fewer than N proposals. `--state` remembers the last run, for an hourly cron job. |
-| [`check_project_open.py`](examples/check_project_open.py) | Whether projects are still open and how many proposals each has now. |
-| [`shortlist_freelancers.py`](examples/shortlist_freelancers.py) | Freelancers for a skill, cut on rate band and rating, with each profile's stats and the average of its latest reviews. |
-| [`compare_offers.py`](examples/compare_offers.py) | The top Offers for a job side by side: price, delivery days, sales, add-ons and what the seller needs from you. |
-| [`save_project_alert.py`](examples/save_project_alert.py) | Save a project search with filters and a daily or instant email alert, then list your saved searches. |
-| [`buyer_daily_digest.py`](examples/buyer_daily_digest.py) | For a buyer: your open projects with proposal counts, unread notifications and WorkStreams with unread messages. |
-| [`median_budgets.py`](examples/median_budgets.py) | Median fixed and hourly budgets per freelancer level for the categories you name, in GBP, USD or EUR. |
+| [`find_new_projects.py`](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/examples/find_new_projects.py) | New projects for one or more keywords in the last N hours, merged, cut on `--min-budget` (or `--hourly-rate`) and `--max-proposals`, then the full brief, questions and files of each one left. |
+| [`read_project_brief.py`](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/examples/read_project_brief.py) | One project before you write a proposal: brief, attached files, the buyer's questions, proposals, expiry and the 80% price floor. |
+| [`watch_urgent_projects.py`](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/examples/watch_urgent_projects.py) | Urgent projects in a category with fewer than N proposals. `--state` remembers the last run, for an hourly cron job. |
+| [`check_project_open.py`](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/examples/check_project_open.py) | Whether projects are still open and how many proposals each has now. |
+| [`shortlist_freelancers.py`](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/examples/shortlist_freelancers.py) | Freelancers for a skill, cut on rate band and rating, with each profile's stats and the average of its latest reviews. |
+| [`compare_offers.py`](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/examples/compare_offers.py) | The top Offers for a job side by side: price, delivery days, sales, add-ons and what the seller needs from you. |
+| [`save_project_alert.py`](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/examples/save_project_alert.py) | Save a project search with filters and a daily or instant email alert, then list your saved searches. |
+| [`buyer_daily_digest.py`](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/examples/buyer_daily_digest.py) | For a buyer: your open projects with proposal counts, unread notifications and WorkStreams with unread messages. |
+| [`median_budgets.py`](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/examples/median_budgets.py) | Median fixed and hourly budgets per freelancer level for the categories you name, in GBP, USD or EUR. |
 
 ```bash
 python examples/find_new_projects.py --query "web design" --query webflow --hours 24 --min-budget 200 --max-proposals 15
@@ -394,7 +394,7 @@ Yes, this one runs on your machine: `peopleperhour-mcp mcp` for Claude Code, Cla
 It returns what people want a job scraper for (new projects with budget, proposals and brief, freelancers and Offers, as JSON or CSV) but runs no headless browser. It calls the same JSON endpoints the PeoplePerHour site calls, in your own account. The one HTML page it reads is a freelancer's profile, for the latest reviews.
 
 **Can I get new PeoplePerHour projects as they are posted?**
-Yes. Call `search_projects` with `since` set to your last check, from cron or an agent. [`watch_urgent_projects.py`](examples/watch_urgent_projects.py) keeps that time in a state file for you.
+Yes. Call `search_projects` with `since` set to your last check, from cron or an agent. [`watch_urgent_projects.py`](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/examples/watch_urgent_projects.py) keeps that time in a state file for you.
 
 **Can it send proposals or answer buyers?**
 No. Proposals, WorkStream messages, buying Offers, invoices and your Proposal credits are not in this version, and it spends no credits. It can read your WorkStreams and notifications. You write and send proposals and messages on PeoplePerHour yourself.
@@ -431,7 +431,7 @@ The source is public, the license is not an open source license: noncommercial u
 
 ## License
 
-[PolyForm Noncommercial License 1.0.0](LICENSE). In short:
+[PolyForm Noncommercial License 1.0.0](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/LICENSE). In short:
 
 - **Allowed:** noncommercial use: you, for your own personal purposes with your own PeoplePerHour account, or a charity, school, public research or government body. Changing the code, and sharing it under the same license.
 - **Not allowed:** any commercial use, your own business included; client work; selling or offering it, or a service built on it.
@@ -442,7 +442,7 @@ The source is public, the license is not an open source license: noncommercial u
   <a href="https://cotlet.dev">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="assets/logo-white.svg">
-      <img src="assets/logo.svg" alt="Cotlet" width="120">
+      <img src="https://raw.githubusercontent.com/cotletdev/peopleperhour-api-mcp-server/main/assets/logo.svg" alt="Cotlet" width="120">
     </picture>
   </a>
 </p>
