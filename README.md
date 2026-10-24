@@ -20,11 +20,10 @@ It is for technical people who want to run it themselves, **for noncommercial us
 [![MCP Badge](https://lobehub.com/badge/mcp/cotletdev-peopleperhour-api-mcp-server)](https://lobehub.com/mcp/cotletdev-peopleperhour-api-mcp-server)
 
 ```bash
-git clone https://github.com/cotletdev/peopleperhour-api-mcp-server.git && cd peopleperhour-api-mcp-server
-python3 -m venv .venv && . .venv/bin/activate && pip install -e .
+uv tool install peopleperhour-api-mcp                  # or: pip install peopleperhour-api-mcp
 peopleperhour-mcp connect                          # reads your PeoplePerHour session from Chrome
 peopleperhour-mcp call search_projects query="web design" limit=5
-claude mcp add peopleperhour -- "$PWD/.venv/bin/peopleperhour-mcp" mcp
+claude mcp add peopleperhour -- uvx peopleperhour-api-mcp mcp
 ```
 
 ## Contents
@@ -67,6 +66,17 @@ The session lives in the `api` cookie, about 100 days after a sign-in with Remem
 
 ## Install
 
+From [PyPI](https://pypi.org/project/peopleperhour-api-mcp/):
+
+```bash
+uv tool install peopleperhour-api-mcp       # or: pipx install peopleperhour-api-mcp, or: pip install peopleperhour-api-mcp
+peopleperhour-mcp --version
+```
+
+MCP clients can also run it with no install: `uvx peopleperhour-api-mcp mcp`.
+
+From source:
+
 ```bash
 git clone https://github.com/cotletdev/peopleperhour-api-mcp-server.git
 cd peopleperhour-api-mcp-server
@@ -80,7 +90,7 @@ With [uv](https://docs.astral.sh/uv/): `uv venv && uv pip install -e .`, then `u
 
 Setting it up with an AI agent (Claude Code, Codex, Cursor)? Open it in this folder and ask it to set up the repo: [`AGENTS.md`](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/AGENTS.md) tells it every step, and it asks you only for the steps in Chrome.
 
-To update: `git pull && pip install -e .`. We copy every change of the hosted PeoplePerHour tools into this repo.
+To update: `uv tool upgrade peopleperhour-api-mcp` (or `pip install -U peopleperhour-api-mcp`), from source `git pull && pip install -e .`. We copy every change of the hosted PeoplePerHour tools into this repo.
 
 ## Connect your Chrome
 
@@ -147,7 +157,7 @@ The MCP server lists all 17 tools with their input schemas and a description wri
 ### Claude Code
 
 ```bash
-claude mcp add peopleperhour -- /path/to/peopleperhour-api-mcp-server/.venv/bin/peopleperhour-mcp mcp
+claude mcp add peopleperhour -- uvx peopleperhour-api-mcp mcp
 ```
 
 ### Claude Desktop
@@ -158,8 +168,8 @@ claude mcp add peopleperhour -- /path/to/peopleperhour-api-mcp-server/.venv/bin/
 {
   "mcpServers": {
     "peopleperhour": {
-      "command": "/path/to/peopleperhour-api-mcp-server/.venv/bin/peopleperhour-mcp",
-      "args": ["mcp"]
+      "command": "uvx",
+      "args": ["peopleperhour-api-mcp", "mcp"]
     }
   }
 }
@@ -175,8 +185,8 @@ claude mcp add peopleperhour -- /path/to/peopleperhour-api-mcp-server/.venv/bin/
 
 ```toml
 [mcp_servers.peopleperhour]
-command = "/path/to/peopleperhour-api-mcp-server/.venv/bin/peopleperhour-mcp"
-args = ["mcp"]
+command = "uvx"
+args = ["peopleperhour-api-mcp", "mcp"]
 ```
 
 ### Over HTTP
