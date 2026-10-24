@@ -15,6 +15,7 @@ It is for technical people who want to run it themselves, **for noncommercial us
 [![PeoplePerHour MCP server](https://img.shields.io/badge/PeoplePerHour%20MCP-17%20tools-6d4aef)](#all-17-tools)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-141318)](#requirements)
 [![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/license-PolyForm%20Noncommercial-141318)](LICENSE)
+[![MCP Badge](https://lobehub.com/badge/mcp/cotletdev-peopleperhour-api-mcp-server)](https://lobehub.com/mcp/cotletdev-peopleperhour-api-mcp-server)
 
 ```bash
 git clone https://github.com/cotletdev/peopleperhour-api-mcp-server.git && cd peopleperhour-api-mcp-server

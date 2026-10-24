@@ -67,7 +67,7 @@ Errors come as `<code>: <message>`. `auth_expired` means PeoplePerHour signed th
 | `peopleperhour_api_mcp/app.py` | app name, domains, session cookie, account paths, REST prefix | Rarely |
 | `peopleperhour_api_mcp/core/` | `@tool` declaration, errors, the HTTP client with the session (`context.py`), the guard against account changes (`account_guard.py`) | Yes |
 | `peopleperhour_api_mcp/session.py` | reading cookies from Chrome over CDP, the session file | Yes |
-| `peopleperhour_api_mcp/runner.py`, `api.py`, `mcp_server.py`, `cli.py` | tool registry, REST API, MCP server, command line | Yes |
+| `peopleperhour_api_mcp/runner.py`, `api.py`, `mcp_server.py`, `mcp_context.py`, `cli.py` | tool registry, REST API, MCP server, its prompts and resources, command line | Yes |
 | `examples/` | scripts for common jobs | Yes |
 
 A new tool is a new file in `peopleperhour_api_mcp/peopleperhour/tools/` with a `@tool(...)` declaration (name, access, input schema, `route`). The registry finds it, and the REST API, the MCP server and the CLI show it without other changes. Every `/v2` call goes through `client.v2`, which adds the fixed `app_id`/`app_key` pair the site's own code sends.
