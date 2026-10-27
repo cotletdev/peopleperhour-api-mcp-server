@@ -12,7 +12,7 @@ from peopleperhour_api_mcp.peopleperhour.tools._people import offer_row
 if TYPE_CHECKING:
     from peopleperhour_api_mcp.core.context import ToolContext
 
-# The filter values of /services ; prices in the viewer's currency.
+# The filter values of /services; prices in the viewer's currency.
 PRICES = ["0-19", "20-50", "50-100", "100-*"]
 SORTS = ["featured", "trending", "most-sales", "hourlie-rating", "price-asc", "price-desc"]
 

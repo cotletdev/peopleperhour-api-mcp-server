@@ -66,7 +66,6 @@ def _row(item: dict[str, Any], extra: dict[tuple[str, str], dict[str, Any]]) -> 
     title="List WorkStreams",
     access="read",
     confirm=False,
-    credits=20,
     description="This account's WorkStreams (conversations with hired freelancers) with the last message.",
     details=(
         "Returns the WorkStreams of the signed-in account, the conversation PeoplePerHour opens for each hire: "

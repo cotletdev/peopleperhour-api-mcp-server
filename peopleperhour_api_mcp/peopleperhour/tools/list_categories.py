@@ -86,7 +86,6 @@ async def _raw(ctx: ToolContext) -> dict[str, Any]:
     title="List categories",
     access="read",
     confirm=False,
-    credits=20,
     description="The 10 project categories with their subcategories and typical budgets per freelancer level.",
     details=(
         "Returns PeoplePerHour's project categories and their subcategories. category is the slug search_projects "

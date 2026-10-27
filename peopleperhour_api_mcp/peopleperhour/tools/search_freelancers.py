@@ -12,7 +12,7 @@ from peopleperhour_api_mcp.peopleperhour.tools._people import freelancer_row
 if TYPE_CHECKING:
     from peopleperhour_api_mcp.core.context import ToolContext
 
-# The filter values of /hire-freelancers , in the viewer's currency for the rate.
+# The filter values of /hire-freelancers, in the viewer's currency for the rate.
 RATES = ["*-10", "10-30", "30-50", "50-*"]
 SORTS = ["most-relevant", "cert", "latest", "rate", "rating", "most-sales"]
 MIN_RATING = {"60": "60-*", "70": "70-*", "80": "80-*"}

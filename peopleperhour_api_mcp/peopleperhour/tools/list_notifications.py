@@ -53,7 +53,6 @@ def _row(item: dict[str, Any]) -> dict[str, Any]:
     title="List notifications",
     access="read",
     confirm=False,
-    credits=20,
     description="The latest notifications of this account (proposals, messages, project updates) and unread counts.",
     details=(
         "Returns the notifications under the bell on PeoplePerHour, newest first: text, link, whether it was read "
