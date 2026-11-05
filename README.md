@@ -1,8 +1,38 @@
-# PeoplePerHour API and MCP server, self-hosted
+# PeoplePerHour API and MCP server: connect PeoplePerHour to ChatGPT and Claude
 
 <!-- mcp-name: dev.cotlet/peopleperhour -->
 
-A **PeoplePerHour API** and a **PeoplePerHour MCP server** you run on your own computer, in Python, on the session of your own Google Chrome. The same 17 PeoplePerHour tools we run in production at [Cotlet](https://cotlet.dev/integrations/peopleperhour-api-mcp-server): search open projects and read full briefs, search freelancers and Offers and read profiles with recent reviews, keep a project watchlist and saved searches with email alerts, see median budgets per category, and read your own posted projects, notifications and WorkStreams.
+**Yes, ChatGPT, Claude and other AI agents can work in your PeoplePerHour account.** That includes Cursor, Codex, OpenClaw and any MCP client, plus automations in n8n, Make and Zapier. Ask in plain words, and the AI searches new projects, reads the briefs and files, shortlists the ones worth a proposal, drafts the proposal for you and compares freelancers. It shows you what it will do first and sends nothing to other people until you say so.
+
+This repo is the missing piece: 17 PeoplePerHour tools for AI assistants and scripts.
+
+## What you can ask
+
+> *Check PeoplePerHour for web design projects posted since yesterday, skip anything under £200 or with more than 15 proposals, read the briefs of the rest and give me a shortlist of five.*
+>
+> *Read the brief of project 4527712, open the files the buyer attached, list what I must deliver and the questions I have to answer, and draft a proposal I can paste.*
+>
+> *Is project 4527712 still open, and how many proposals does it have now?*
+>
+> *Find logo designers rated 80% or more at £10 to £30 an hour, read the profiles and recent reviews of the top five, and tell me which three to contact.*
+>
+> *Save a search for urgent fixed-price design projects called "Urgent design" with a daily email.*
+
+## Two ways to get it
+
+| | [Ready to use, at Cotlet](https://cotlet.dev/integrations/peopleperhour-api-mcp-server?utm_source=github&utm_medium=readme&utm_campaign=peopleperhour&utm_content=two-ways) | Run it yourself, this repo |
+|---|---|---|
+| For | freelancers and buyers | developers |
+| Setup | sign in to PeoplePerHour once, about 5 minutes, nothing to install | Python and a terminal |
+| Works in | ChatGPT and Claude apps, on your phone too, Cursor, Codex, OpenClaw, any MCP client, n8n, Make, Zapier, REST API | Claude Code, Claude Desktop, Cursor, Codex on your computer |
+| Runs | 24/7, your computer can be off | while your computer is on |
+| Price | 7 days free, no card | free |
+
+**[Start free at cotlet.dev →](https://cotlet.dev/signup?app=peopleperhour&utm_source=github&utm_medium=readme&utm_campaign=peopleperhour&utm_content=top-button)**
+
+## Run it yourself
+
+A **PeoplePerHour API** and a **PeoplePerHour MCP server** you run on your own computer, in Python, on the session of your own Google Chrome. The same 17 PeoplePerHour tools we run in production at [Cotlet](https://cotlet.dev/integrations/peopleperhour-api-mcp-server?utm_source=github&utm_medium=readme&utm_campaign=peopleperhour&utm_content=intro): search open projects and read full briefs, search freelancers and Offers and read profiles with recent reviews, keep a project watchlist and saved searches with email alerts, see median budgets per category, and read your own posted projects, notifications and WorkStreams.
 
 PeoplePerHour has no public API and no official MCP server. This repo gives you both:
 
@@ -12,11 +42,11 @@ PeoplePerHour has no public API and no official MCP server. This repo gives you 
 
 13 tools read. The other 4 change only your own watchlist and saved searches. Nothing here sends a proposal or a message, posts a project, buys an Offer or pays, and no Proposal credit is spent.
 
-It is for technical people who want to run it themselves, **for noncommercial use only** ([license](#license)). If you want it running 24/7 on a server, kept working when PeoplePerHour changes its site, for a team or a business, use the [hosted version at cotlet.dev](https://cotlet.dev/integrations/peopleperhour-api-mcp-server).
+Free for your own use, your own business included ([license](#license)).
 
 [![PeoplePerHour MCP server](https://img.shields.io/badge/PeoplePerHour%20MCP-17%20tools-6d4aef)](#all-17-tools)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-141318)](#requirements)
-[![License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/license-PolyForm%20Noncommercial-141318)](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/LICENSE)
+[![License: Elastic 2.0](https://img.shields.io/badge/license-Elastic%202.0-141318)](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/LICENSE)
 [![MCP Badge](https://lobehub.com/badge/mcp/cotletdev-peopleperhour-api-mcp-server)](https://lobehub.com/mcp/cotletdev-peopleperhour-api-mcp-server)
 
 ```bash
@@ -28,6 +58,7 @@ claude mcp add peopleperhour -- uvx peopleperhour-api-mcp mcp
 
 ## Contents
 
+- [Questions from PeoplePerHour users](#questions-from-peopleperhour-users)
 - [How it works](#how-it-works)
 - [Requirements](#requirements)
 - [Install](#install)
@@ -42,6 +73,41 @@ claude mcp add peopleperhour -- uvx peopleperhour-api-mcp mcp
 - [Self-hosted or hosted](#self-hosted-or-hosted)
 - [FAQ](#faq)
 - [License](#license)
+
+## Questions from PeoplePerHour users
+
+**Does PeoplePerHour have an API?**
+No. PeoplePerHour has no public API, no developer docs and no webhooks (checked 12 Oct 2026). The one built-in alert is Saved Searches: up to 10 searches on the Jobs page, each emailing new results instantly or once a day. PeoplePerHour gives you nothing to call them from code; here `save_search` and `list_saved_searches` manage them. This repo and [Cotlet](https://cotlet.dev/integrations/peopleperhour-api-mcp-server?utm_source=github&utm_medium=readme&utm_campaign=peopleperhour&utm_content=faq-api) give you 17 PeoplePerHour tools as a REST API and an MCP server.
+
+**Can I get a PeoplePerHour API key?**
+Not from PeoplePerHour for your own account. With Cotlet you get your own API key that works with your PeoplePerHour account, for scripts, n8n, Make, Zapier or any HTTP client. This repo needs no key: it runs on your computer, on your own PeoplePerHour session.
+
+**Is there an official ChatGPT integration for PeoplePerHour?**
+No. PeoplePerHour has no official ChatGPT or Claude connector. Cotlet is an unofficial one that works today, in the ChatGPT and Claude apps and in any AI agent that takes an MCP server.
+
+**How do I connect PeoplePerHour to ChatGPT?**
+Sign up at [cotlet.dev](https://cotlet.dev/signup?app=peopleperhour&utm_source=github&utm_medium=readme&utm_campaign=peopleperhour&utm_content=faq-chatgpt), sign in to PeoplePerHour once in your Cloud Browser there, and add Cotlet to ChatGPT, following the steps in your account. Then ask ChatGPT about your PeoplePerHour like you would ask an assistant. ChatGPT needs a server on the internet, so this repo alone, running on your computer, does not connect to ChatGPT.
+
+**Can ChatGPT find PeoplePerHour projects for me?**
+Yes, with Cotlet. It searches new projects by your skills and budget, skips the crowded ones, reads the briefs and attached files, and drafts a proposal you paste yourself. It never sends a proposal or spends your credits.
+
+**Can I automate PeoplePerHour with Zapier, Make or n8n?**
+PeoplePerHour has no Zapier or Make app. With Cotlet, n8n, Make and Zapier can search projects and freelancers and send you a daily shortlist.
+
+**Can I use it from my phone?**
+Yes, with Cotlet: once it is set up, the ChatGPT and Claude apps on your phone can use PeoplePerHour for you.
+
+**Do I need to be technical?**
+For Cotlet, no: you sign in to PeoplePerHour and add Cotlet to ChatGPT or Claude, with step-by-step instructions in your account. This repo is for people who are fine with Python and a terminal.
+
+**Is my PeoplePerHour account safe?**
+Yes. Neither Cotlet nor this repo sees or stores your PeoplePerHour password. You sign in yourself, the way you always do, and the AI works on that signed-in session. Anything that reaches other people asks for your OK first: in Cotlet by default, here through your MCP client.
+
+**Is it free?**
+This repo is free, also in your own business. Cotlet is free for 7 days with no card, then one-time credit packs from $29, no subscription. [Pricing](https://cotlet.dev/pricing?utm_source=github&utm_medium=readme&utm_campaign=peopleperhour&utm_content=faq-price).
+
+**I manage PeoplePerHour for several accounts or clients. Does that work?**
+Yes, with Cotlet. Each PeoplePerHour login gets its own connection. Write to [contact@cotlet.dev](mailto:contact@cotlet.dev) and tell us how many accounts you manage.
 
 ## How it works
 
@@ -380,22 +446,19 @@ The REST API answers `{"error": "<code>", "message": "..."}`. The MCP server ret
 
 ## Self-hosted or hosted
 
-| | This repo | [Cotlet, hosted](https://cotlet.dev/integrations/peopleperhour-api-mcp-server) |
+| | This repo | [Cotlet, hosted](https://cotlet.dev/integrations/peopleperhour-api-mcp-server?utm_source=github&utm_medium=readme&utm_campaign=peopleperhour&utm_content=compare) |
 |---|---|---|
 | Tools | the same 17 | the same 17 |
 | Runs | on your computer, while it is on | in the cloud, 24/7 |
 | PeoplePerHour session | your Chrome, cookies in a local file | your own Cloud Browser in the EU, profile encrypted with AES-256-GCM |
 | When PeoplePerHour changes its site | `git pull` once we have fixed it | fixed for you, every tool tested daily |
 | Works with | MCP clients on your machine, local scripts | Claude.ai and ChatGPT connectors, n8n, Make, Zapier, any HTTP client |
-| Who may use it | you, for noncommercial use | teams, businesses, agencies |
+| Who may use it | you and your own business | you, teams, businesses, agencies |
 | Price | free | free 7-day trial with 2,000 credits, no card; then one-time packs from $29 for 5,000 credits |
 
 On the hosted version a successful call uses 10 credits for most tools, failed calls are free, and the Cloud Browser uses 50 credits a day while it has an app enabled for agents. [Full pricing](https://cotlet.dev/pricing).
 
 ## FAQ
-
-**Does PeoplePerHour have an official API?**
-No. PeoplePerHour has no public API, no developer docs and no webhooks (checked 12 Oct 2026). The one built-in alert is Saved Searches: up to 10 searches on the Jobs page, each emailing new results instantly or once a day. PeoplePerHour gives you nothing to call them from code; here `save_search` and `list_saved_searches` manage them. Details: [cotlet.dev/integrations/peopleperhour-api-mcp-server](https://cotlet.dev/integrations/peopleperhour-api-mcp-server).
 
 **Is there a PeoplePerHour MCP server for Claude, ChatGPT or Cursor?**
 Yes, this one runs on your machine: `peopleperhour-mcp mcp` for Claude Code, Claude Desktop, Cursor and Codex. ChatGPT and Claude.ai connectors need a public HTTPS URL, which the [hosted PeoplePerHour MCP server](https://cotlet.dev/integrations/peopleperhour-api-mcp-server) gives you.
@@ -431,20 +494,20 @@ Technically yes, with `PEOPLEPERHOUR_AUTH_TOKEN`. PeoplePerHour then sees your s
 Requests carry Chrome's fingerprint and go out one at a time, and the tools read only what you could open yourself. Nobody can promise a platform never acts. Keep the polling to what a person would do.
 
 **Can I use it at work or for my clients?**
-No, the license allows noncommercial use only. For a team, a company or client work, use [Cotlet](https://cotlet.dev) or write to [contact@cotlet.dev](mailto:contact@cotlet.dev).
+At work and in your own business, yes, free. You may not offer it to others as a hosted or managed service. For client work, use [Cotlet](https://cotlet.dev?utm_source=github&utm_medium=readme&utm_campaign=peopleperhour&utm_content=faq-clients) or write to [contact@cotlet.dev](mailto:contact@cotlet.dev).
 
 **Is it open source?**
-The source is public, the license is not an open source license: noncommercial use only, no business use.
+The source is public under the Elastic License 2.0: free to use and change, also in your own business, but not to resell as a hosted service.
 
 **A tool broke or I need another one.**
 [Open an issue](https://github.com/cotletdev/peopleperhour-api-mcp-server/issues) with the tool name and the error message.
 
 ## License
 
-[PolyForm Noncommercial License 1.0.0](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/LICENSE). In short:
+[Elastic License 2.0](https://github.com/cotletdev/peopleperhour-api-mcp-server/blob/main/LICENSE). In short:
 
-- **Allowed:** noncommercial use: you, for your own personal purposes with your own PeoplePerHour account, or a charity, school, public research or government body. Changing the code, and sharing it under the same license.
-- **Not allowed:** any commercial use, your own business included; client work; selling or offering it, or a service built on it.
+- **Allowed:** using it for yourself and in your own business, free. Changing the code and sharing it under the same license.
+- **Not allowed:** offering it to others as a hosted or managed service, removing the license notices, getting around its limits.
 
 ---
 
@@ -457,4 +520,4 @@ The source is public, the license is not an open source license: noncommercial u
   </a>
 </p>
 
-Maintained by [Cotlet](https://cotlet.dev) ([@cotletdev](https://x.com/cotletdev)). PeoplePerHour is a trademark of its owner. This project is unofficial and not affiliated with, endorsed or sponsored by PeoplePerHour.
+Maintained by [Cotlet](https://cotlet.dev?utm_source=github&utm_medium=readme&utm_campaign=peopleperhour&utm_content=footer) ([@cotletdev](https://x.com/cotletdev)). PeoplePerHour is a trademark of its owner. This project is unofficial and not affiliated with, endorsed or sponsored by PeoplePerHour.
